@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { useEffect, useState } from "react";
+
 import twitter from "./assets/x-twitter.svg";
+
+import "./App.scss";
 
 interface Quote {
 	title: string;
@@ -10,13 +12,19 @@ interface Quote {
 }
 
 function App() {
-	const [quotes, setQuotes] = useState<Quote[]>([]);
+	const [quotes, setQuotes] = useState<Quote[]>();
+	const [color, setColor] = useState("");
+
+	const changeColor = () => {
+		const randomHexColor = Math.floor(Math.random() * 16777215).toString(16);
+		const randomFullColor = `#${randomHexColor}`;
+		setColor(randomFullColor);
+	};
 
 	const fetchQuotes = async () => {
 		const res = await fetch("https://api.quotable.io/quotes/random");
 		const data = await res.json();
 		setQuotes(data);
-		console.log(data);
 	};
 
 	useEffect(() => {
@@ -24,42 +32,53 @@ function App() {
 	}, []);
 
 	return (
-		<div className="container">
-			<div className="row">
-				<div className="col d-flex justify-content-center">
-					{quotes?.map((quote) => {
-						return (
-							<div className="card mw-100" id="quote-box" key={quote.id}>
-								<div className="card-body">
-									<p className="card-text fs-4" id="text">
-										{quote.content}
-									</p>
-									<p className="text-secondary" id="author">
-										- {quote.author}
-									</p>
-									<div>
-										<a
-											href="twitter.com/intent/tweet"
-											target="_blank"
-											id="tweet-quote"
-										>
-											<i className={twitter}></i>
-											tweet quote
-										</a>
-										<button
-											id="new-quote"
-											className="btn btn-primary mx-2"
-											onClick={fetchQuotes}
-										>
-											quote text
-										</button>
-									</div>
-								</div>
+		<div
+			className="container"
+			style={{ backgroundColor: color ? color : "gray" }}
+		>
+			{quotes?.map((quote) => {
+				return (
+					<div className="card" id="quote-box" key={quote.author}>
+						<div
+							className="card-body"
+							style={{ color: color ? color : "gray" }}
+						>
+							<p className="card-text" id="text">
+								{quote.content}
+							</p>
+							<p id="author">- {quote.author}</p>
+							<div className="card-links">
+								<a
+									href="twitter.com/intent/tweet"
+									target="_blank"
+									id="tweet-quote"
+									className="btn"
+									style={{ backgroundColor: color ? color : "gray" }}
+								>
+									<img
+										src={twitter}
+										style={{ height: "24px", width: "24px" }}
+									/>
+								</a>
+								<button
+									id="new-quote"
+									className="btn"
+									onClick={() => {
+										fetchQuotes();
+										changeColor();
+									}}
+									style={{
+										backgroundColor: color ? color : "gray",
+										color: color == "#ffffff" ? "#000000" : "#ffffff",
+									}}
+								>
+									New Quote
+								</button>
 							</div>
-						);
-					})}
-				</div>
-			</div>
+						</div>
+					</div>
+				);
+			})}
 		</div>
 	);
 }

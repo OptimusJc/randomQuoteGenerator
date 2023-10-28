@@ -1,0 +1,69 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Playpen Sans', cursive;
+}
+
+.container {
+  background-color: cyan;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  .card {
+    width: clamp(350px, 50%, 650px);
+    min-height: 300px;
+    border: 2px solid black;
+    container-name: main-container;
+    container-type: inline-size;
+    background-color: #ffffff;
+
+    .card-body {
+      padding: 1rem 1rem;
+      p.card-text {
+        font-size: 1.4rem;
+        text-align: center;
+      }
+      p#author {
+        text-align: right;
+        margin-block: 2rem;
+      }
+
+      .card-links {
+        display: flex;
+        justify-content: space-between;
+
+        .btn {
+          padding: 0.6rem;
+          border: 0;
+          border-radius: 0.1rem;
+        }
+      }
+    }
+  }
+
+@media screen and (width > 400px) and (width < 1024px) {
+  .card {
+    .card-body {
+      p.card-text {
+        font-size: 1.7rem;
+      }
+    }
+  }
+}
+
+@media screen and (width > 1200px) {
+  .card {
+    .card-body {
+      p.card-text {
+        font-size: 2.1rem;
+      }
+    }
+  }
+}
+}
+
